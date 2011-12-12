@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+
+<!--
+   INOU, the Integrated Numerical Operation Utility
+   RPC Extension
+   Copyright (C) 2005-2006 SAKURAI, Masashi
+   (m.sakurai@dream.com)
+ -->
+
+<project name="inourpc" default="compile" basedir=".">
+
+  <target name="all">
+    <antcall target="clean"/>
+    <antcall target="total"/>
+  </target>
+
+  <target name="prepare">
+    <mkdir dir="dest" />
+  </target>
+
+  <path id="compile.classpath">
+    <fileset dir="libs" includes="**/*.jar" />
+  </path>
+
+  <path id="run.classpath">
+    <fileset dir="libs" includes="**/*.jar" />
+    <pathelement path="conf"/>
+    <pathelement path="dest"/>
+  </path>
+
+  <target name="compile-test" depends="compile">
+    <javac srcdir="test" destdir="test" debug="yes" encoding="utf-8">
+      <classpath>
+        <path refid="run.classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="jj-test" depends="compile-test">
+    <junit printsummary="yes" fork="true" haltonfailure="false">
+      <classpath>
+        <path refid="run.classpath"/>
+        <pathelement path="test"/>
+      </classpath>
+      <formatter type="plain"/>
+      <test name="RPCTestSuite"/>
+    </junit>
+  </target>
+
+  <target name="run-jecho" depends="compile">
+    <java classname="inou.net.rpc.BinServer"  fork="true">
+      <arg value="9999"/>
+      <arg value="verbose"/>
+      <classpath>
+        <path refid="run.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!--  packing class files -->
+
+  <target name="jar" depends="compile">
+    <jar jarfile="inourpc.jar" includes="**/*.class,**/*.txt,**/*.properties" basedir="dest"/>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac srcdir="src" destdir="dest" debug="yes" encoding="utf-8">
+      <classpath>
+        <path refid="compile.classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- packing source files -->
+
+  <target name="src">
+    <tstamp>
+      <format property="TODAY" pattern="yyyyMMdd"/>
+    </tstamp>
+    <zip destfile="inourpc_src.zip" basedir="src" excludes="**/.svn/**"/>
+  </target>
+
+  <!-- packing total files -->
+
+  <target name="total" depends="jar,src">
+    <tar tarfile="inourpc.tar.gz" basedir="." compression="gzip"
+      includes="inourpc_src.tar.gz, inourpc.jar, *.txt"/>
+  </target>
+
+  <!--  remove all files -->
+
+  <target name="clean">
+    <delete dir="dest" />
+    <delete>
+      <fileset dir="." includes="**/*.class"/>
+      <fileset dir="." includes="**/*.log"/>
+      <fileset dir="." includes="**/TEST-*.txt"/>
+      <fileset dir="." includes="**/inou*.tmp"/>
+    </delete>
+  </target>
+
+</project>
