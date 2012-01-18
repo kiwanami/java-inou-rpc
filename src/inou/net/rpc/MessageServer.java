@@ -221,6 +221,12 @@ public class MessageServer implements BinConstants {
 				}
 			}
 		} finally {
+            synchronized(receivingLock) {
+                Object removedObj = receivingTable.remove(sid);
+                if (removedObj == null) {
+                    monitor.debug("MS: Wrong removal: "+sid);
+                }
+            }
 			synchronized(sendingLock) {
 				waitingList.remove(sid);
 			}
