@@ -163,6 +163,10 @@ public class ClientServerTest extends TestCase {
 				list.wait();
 			}
 		}
+
+        assertEquals(client.getWaitingSessionNumber(),0);
+        assertEquals(client.getSendingQueueNumber(),0);
+
 		client.shutdown();
 	}
 
@@ -326,6 +330,9 @@ public class ClientServerTest extends TestCase {
 			assertTrue(e.getMessage().indexOf("VMError")>=0);
 		}
 
+        assertEquals(client.getWaitingSessionNumber(),0);
+        assertEquals(client.getSendingQueueNumber(),0);
+
 		server.removeHandler("err");
 		client.shutdown();
 	}
@@ -346,6 +353,9 @@ public class ClientServerTest extends TestCase {
 		} catch (IOException e) {
 			assertTrue(e.getMessage().indexOf("BinStreamException")>=0);
 		}
+
+        assertEquals(client.getWaitingSessionNumber(),0);
+        assertEquals(client.getSendingQueueNumber(),0);
 
 		server.removeHandler("err");
 		client.shutdown();

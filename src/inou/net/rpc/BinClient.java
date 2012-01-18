@@ -173,4 +173,12 @@ public class BinClient implements BinConstants,ICommunicator{
 		handlerManager.removeHandler(name);
 	}
 
+    public int getWaitingSessionNumber() {
+        return messageServer.getWaitingSessionNumber();
+    }
+
+    public int getSendingQueueNumber() {
+        return messageServer.getSendingQueueNumber();
+    }
+
 }

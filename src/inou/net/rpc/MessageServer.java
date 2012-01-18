@@ -90,6 +90,14 @@ public class MessageServer implements BinConstants {
             return normalOutput;
         }
     }
+
+    int getWaitingSessionNumber() {
+        return receivingTable.size();
+    }
+
+    int getSendingQueueNumber() {
+        return sendingQueue.size();
+    }
     
     public void setSocket(Socket s) throws IOException {
 		synchronized(socketLock) {
