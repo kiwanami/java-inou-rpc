@@ -1,10 +1,10 @@
-exINOU-RPC
+INOU-RPC
 
   Integrated Numerical Operation Utilities,
   RPC Extension.
 
-  Version 0.4.0
-  Time-stamp: "2009-03-02 13:57:16 sakurai"
+  Version 0.4.2
+  Time-stamp: "2012-01-18 18:16:29 sakurai"
 
 Å°âΩÇ©ÅH
 
