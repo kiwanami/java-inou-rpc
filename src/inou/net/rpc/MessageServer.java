@@ -247,6 +247,13 @@ public class MessageServer implements BinConstants {
 		return sid;
 	}
 
+	private Object addErrorToReceiveQueue(Object sid,int code,String klass,String message,String detail) {
+		AbstractResultObject c = new ResultErrObject(sid,code,klass,message,detail);
+		receivingTable.put(sid,c);
+		monitor.debug("MS: +Queue["+sendingQueue.size()+"] : "+c);
+		return sid;
+	}
+
 	private Object addCallingMessageToSendingQueue(String name,Object[] args) {
 		Object sid = getSID();
 		CallingObject c = new CallingObject(sid,name,args); 
@@ -288,9 +295,9 @@ public class MessageServer implements BinConstants {
 					e.printStackTrace(new PrintWriter(sw));
 					sw.flush();
 					synchronized(sendingLock) {
-						addErrorToSendingQueue(entry.sid,R_PROTOCOL_ERROR,"BinStreamException",
+						addErrorToReceiveQueue(entry.sid,R_PROTOCOL_ERROR,"BinStreamException",
 											   e.getMessage()+" (maybe bug...)",sw.toString());
-						sendingLock.notifyAll();
+						receivingLock.notifyAll();
 					}
 				}
 				continue;
@@ -298,7 +305,7 @@ public class MessageServer implements BinConstants {
 				if (entry != null) {
 					monitor.warn("Failed to sending the message: "+entry);
 					synchronized(sendingLock) {
-						sendingQueue.add(entry);
+						sendingQueue.add(entry); //for retry again
 					}
 				}
 				String mes = e.getMessage();

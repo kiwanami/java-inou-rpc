@@ -304,13 +304,13 @@ public class ClientServerTest extends TestCase {
 				}
 			});
 		try {
-			client.send("err",null);
+			client.send("err",null); //application error
 		} catch (RuntimeException e) {
 			assertTrue(e.getMessage().indexOf("ApplicationError!")>=0);
 		}
 
 		try {
-			client.send("err1",null);
+			client.send("err1",null); //wrong method
 		} catch (IOException e) {
 			assertTrue(e.getMessage().indexOf("NoSuch")>=0);
 		}
@@ -324,6 +324,27 @@ public class ClientServerTest extends TestCase {
 			client.send("err",null);
 		} catch (InternalError e) {
 			assertTrue(e.getMessage().indexOf("VMError")>=0);
+		}
+
+		server.removeHandler("err");
+		client.shutdown();
+	}
+
+	public void testSerializationError() throws Exception {
+		int port = server.getPortNumber();
+		BinClient client = new BinClient("localhost",port);
+		client.start();
+
+		server.addHandler("err",new IMessageHandler() {
+				public Object send(Object[] arg) throws Exception {
+					throw new RuntimeException("ApplicationError!");
+				}
+			});
+
+		try {
+			client.send("err", new Object[]{this}); //serialization error
+		} catch (IOException e) {
+			assertTrue(e.getMessage().indexOf("BinStreamException")>=0);
 		}
 
 		server.removeHandler("err");
