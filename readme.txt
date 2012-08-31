@@ -3,8 +3,8 @@ INOU-RPC
   Integrated Numerical Operation Utilities,
   RPC Extension.
 
-  Version 0.4.2
-  Time-stamp: "2012-01-18 18:16:29 sakurai"
+  Version 0.4.3
+  Time-stamp: "2012-08-31 14:15:33 sakurai"
 
 Å°âΩÇ©ÅH
 
