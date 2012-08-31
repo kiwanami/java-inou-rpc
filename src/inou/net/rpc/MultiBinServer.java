@@ -36,6 +36,13 @@ public class MultiBinServer implements BinConstants,IServiceManager {
         serverSocket = new ServerSocket(port);
     }
 
+    /**
+       for SSL Server Socket
+     */
+    public MultiBinServer(ServerSocket s) {
+        this.serverSocket = s;
+    }
+
 	public void restart() {
 		invocationPool.init();
 	}

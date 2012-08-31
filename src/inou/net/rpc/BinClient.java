@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.InetAddress;
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocket;
 
 import inou.net.InvocationPool;
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import org.apache.log4j.Logger;
 public class BinClient implements BinConstants,ICommunicator{
 
 	private Logger monitor = Logger.getLogger(this.getClass());
+    private SocketFactory socketFactory;
 	private String host;
 	private int port;
     
@@ -30,6 +33,11 @@ public class BinClient implements BinConstants,ICommunicator{
 	private boolean shutdownFlag = false;
 
     public BinClient(String host,int port) {
+        this(SocketFactory.getDefault(),host,port);
+    }
+
+    public BinClient(SocketFactory sf,String host,int port) {
+        this.socketFactory = sf;
         this.host = host;
         this.port = port;
         invocationPool = new InvocationPool(2,100,"CL|POOL");
@@ -132,8 +140,11 @@ public class BinClient implements BinConstants,ICommunicator{
 					while(!shutdownFlag) {
 						try {
 							monitor.info("BinClient: connecting...");
-							Socket socket = new Socket(host,port);
+							Socket socket = socketFactory.createSocket(host,port);
 							monitor.info("BinClient: connection established.");
+                            if (socket instanceof SSLSocket) {
+                                ((SSLSocket)socket).startHandshake();
+                            }
 							messageServer.setSocket(socket);
 							messageServer.blockWorkingThread();
 							monitor.info("BinClient: disconnected.");
