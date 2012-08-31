@@ -9,30 +9,30 @@ public class SampleClient {
     public static void main(String[] args) { 
         BinClient client = new BinClient("localhost",10024);
 
-        //‘«‚µZ‚ğ‚·‚éƒƒ\ƒbƒh‚ğ’Ç‰ÁBƒT[ƒo[‘¤‚©‚çŒÄ‚Î‚ê‚é
+        //è¶³ã—ç®—ã‚’ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’è¿½åŠ ã€‚ã‚µãƒ¼ãƒãƒ¼å´ã‹ã‚‰å‘¼ã°ã‚Œã‚‹
         client.addHandler("add",handler);
         
         try {
-            client.start();//Ú‘±ŠJn
+            client.start();//æ¥ç¶šé–‹å§‹
         } catch (RuntimeException e) {
-            //‘Šè‚ª‚¢‚È‚­‚Ä timeout ‚µ‚½‚Æ‚«‚È‚ÇB
+            //ç›¸æ‰‹ãŒã„ãªãã¦ timeout ã—ãŸã¨ããªã©ã€‚
             e.printStackTrace();
             return;
         }
         Object obj = null;
         try {
-            //server‘¤‚Ì echo ƒƒ\ƒbƒh‚ğˆø” hello ‚ÅÀs
+            //serverå´ã® echo ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å¼•æ•° hello ã§å®Ÿè¡Œ
             obj = client.send("echo",new Object[]{"hello"});
         } catch (RemoteRuntimeException e) {
-            //ƒT[ƒo[‘¤‚ÌƒvƒƒOƒ‰ƒ€‚ÅƒGƒ‰[‚ª‹N‚«‚½ê‡
+            //ã‚µãƒ¼ãƒãƒ¼å´ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸå ´åˆ
             e.printStackTrace();
         } catch (IOException e) {
-            //’ÊM©‘Ì‚É‰½‚©–â‘è‚ª‚ ‚Á‚½ê‡
+            //é€šä¿¡è‡ªä½“ã«ä½•ã‹å•é¡ŒãŒã‚ã£ãŸå ´åˆ
             e.printStackTrace();
         }
         System.out.println(obj);
         
-        //ƒT[ƒo[‘¤‚ª‚±‚¿‚ç‘¤‚Ì add ƒƒ\ƒbƒh‚ğŒÄ‚Ô‚Ì‚ğ‘Ò‚Â 
+        //ã‚µãƒ¼ãƒãƒ¼å´ãŒã“ã¡ã‚‰å´ã® add ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã®ã‚’å¾…ã¤ 
         while(true) {
             synchronized (calledFlag) {
                 if (calledFlag[0]) break;
@@ -50,8 +50,8 @@ public class SampleClient {
     
     private static IMessageHandler handler = new IMessageHandler(){
         public Object send(Object[] args) throws Exception {
-            //ˆø”‚ğ2ŒÂ‚Æ‚Á‚ÄA‘«‚µZ‚ğ‚·‚éB
-            //ƒCƒ“ƒ^ƒtƒF[ƒXi–¼‘O‚âˆø”‚ÌŒ^‚È‚Çj‚Í‘o•û‚ÌƒvƒƒOƒ‰ƒ}‚ÅŒˆ‚ß‚Ä‚¨‚­B
+            //å¼•æ•°ã‚’2å€‹ã¨ã£ã¦ã€è¶³ã—ç®—ã‚’ã™ã‚‹ã€‚
+            //ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ï¼ˆåå‰ã‚„å¼•æ•°ã®å‹ãªã©ï¼‰ã¯åŒæ–¹ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒã§æ±ºã‚ã¦ãŠãã€‚
             try {
                 Integer i1 = (Integer)args[0];
                 Integer i2 = (Integer)args[1];

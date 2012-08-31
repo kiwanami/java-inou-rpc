@@ -36,6 +36,14 @@
     </javac>
   </target>
 
+  <target name="compile-samples" depends="compile">
+    <javac srcdir="sample" destdir="sample" debug="yes" encoding="utf-8">
+      <classpath>
+        <path refid="run.classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
   <target name="jj-test" depends="compile-test">
     <junit printsummary="yes" fork="true" haltonfailure="false">
       <classpath>

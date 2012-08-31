@@ -9,23 +9,23 @@ public class SampleServer {
     public static void main(String[] args) throws IOException {
         MultiBinServer serverGenerator = new MultiBinServer(10024);//port=10024
         
-        //‚â‚Á‚Ä‚«‚½•¶š—ñ‚ğ‰ÁH‚µ‚Ä•Ô‚·ƒƒ\ƒbƒh@echo ‚ğ’Ç‰Á
+        //ã‚„ã£ã¦ããŸæ–‡å­—åˆ—ã‚’åŠ å·¥ã—ã¦è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰ã€€echo ã‚’è¿½åŠ 
         serverGenerator.addHandler("echo",new IMessageHandler() {
             public Object send(Object[] args) throws Exception {
                 return "ECHO: "+args[0];
             }
         });
         
-        //ƒNƒ‰ƒCƒAƒ“ƒg‚ªÚ‘±‚µ‚Ä‚­‚é‚Ì‚ğ‘Ò‚Â
+        //ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆãŒæ¥ç¶šã—ã¦ãã‚‹ã®ã‚’å¾…ã¤
         ICommunicator client = serverGenerator.getClientConnection();
         
-        //ƒNƒ‰ƒCƒAƒ“ƒg‘¤‚Ìƒƒ\ƒbƒh add ‚ğˆø” 1,2 ‚ÅÀs
+        //ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆå´ã®ãƒ¡ã‚½ãƒƒãƒ‰ add ã‚’å¼•æ•° 1,2 ã§å®Ÿè¡Œ
         Object obj = client.send("add",new Object[]{new Integer(1),new Integer(2)});
         
         System.out.println(obj);
         
-        //‚±‚ÌŒãƒNƒ‰ƒCƒAƒ“ƒg‘¤‚©‚çØ’f‚³‚ê‚éB
-        //ƒT[ƒo[‚Ìƒ|[ƒg‚Í‚Ü‚¾è—L‚³‚ê‚Ä‚¢‚é‚Ì‚ÅACtrl-C‚Å~‚ß‚éB
+        //ã“ã®å¾Œã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆå´ã‹ã‚‰åˆ‡æ–­ã•ã‚Œã‚‹ã€‚
+        //ã‚µãƒ¼ãƒãƒ¼ã®ãƒãƒ¼ãƒˆã¯ã¾ã å æœ‰ã•ã‚Œã¦ã„ã‚‹ã®ã§ã€Ctrl-Cã§æ­¢ã‚ã‚‹ã€‚
     }
 
 }
